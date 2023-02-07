@@ -1,0 +1,23 @@
+{
+  "name": "jest-pptr-e2e-magento-ecommercestore-project",
+  "version": "1.0.0",
+  "description": "Full E2E testing framework for demo e-commerce site available to practive Automated Software Testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "Jest",
+    "Puppeteer"
+  ],
+  "author": "Dominik Adamczewski",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.20.12",
+    "@babel/preset-env": "^7.20.2",
+    "babel-jest": "^29.4.1",
+    "jest": "^29.4.1",
+    "jest-puppeteer": "^7.0.0",
+    "puppeteer": "^19.6.3"
+  }
+}

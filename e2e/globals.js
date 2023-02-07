@@ -1,0 +1,1 @@
+export const E2E_BASE_URL = 'https://magento.softwaretestingboard.com/';
