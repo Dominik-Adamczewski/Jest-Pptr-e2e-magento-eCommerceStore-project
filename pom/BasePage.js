@@ -21,5 +21,13 @@ export default class BasePage {
         const text = await page.$eval(selector, element => element.textContent);
 
         return text;
-    }
+    };
+
+    async assertText(selector, expectedText) {
+        await page.waitForSelector(selector);
+
+        const text = await this.getText(selector);
+
+        expect(text).toEqual(expectedText);
+    };
 }
