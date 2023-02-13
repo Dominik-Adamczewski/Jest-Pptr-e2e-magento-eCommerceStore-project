@@ -30,4 +30,12 @@ export default class BasePage {
 
         expect(text).toEqual(expectedText);
     };
+
+    async clearInputField(selector) {
+        await page.waitForSelector(selector);
+
+        const input = await page.$(selector);
+        await input.click({ clickCount: 3 });
+        await page.keyboard.press('Backspace');
+    };
 }

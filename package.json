@@ -4,7 +4,8 @@
   "description": "Full E2E testing framework for demo e-commerce site available to practive Automated Software Testing",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test-specific": "jest -t Sign up test suite"
   },
   "keywords": [
     "Jest",
