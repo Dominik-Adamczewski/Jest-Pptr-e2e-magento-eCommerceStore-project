@@ -36,11 +36,10 @@ export default class SignUpPage extends BasePage {
     };
 
     passwordStrengthClasses = [
-        '.password-none',
-        '.password-weak',
-        '.password-medium',
-        '.password-strong',
-        '.password-very-strong'
+        'password-weak',
+        'password-medium',
+        'password-strong',
+        'password-very-strong'
     ];
 
     async waitForSignUpPageToRender() {

@@ -53,13 +53,36 @@ describe('Sign up test suite', () => {
         );
     });
 
-    // test('Should fail to Sign up and display all the available password strengths', async () => {
-    //     let password = '';
-    //     const passwordStrengthsArray = signUpPage.passwordStrengthClasses;
+    test('Should fail to Sign up and display all the available password strengths', async () => {
+        const arrayOfPasswords = [
+            'test',
+            'testtest1!',
+            'testtest1!@#',
+            'testtest1!@#qwe'
+        ];
+        const passwordStrengthsArray = signUpPage.passwordStrengthClasses;
 
-    //     for(let strength of passwordStrengthsArray) {
-    //         expect(signUpPage.selectors.passwordStrengthMeter)
-    //     };
-    // });
-    // TODO: method to get Class name from element
+        for(let i = 0; i < passwordStrengthsArray.length; i++) {
+            await signUpPage.setPassword(arrayOfPasswords[i]);
+
+            const classToCheck = await signUpPage.getElementClass(signUpPage.selectors.passwordStrengthMeter);
+                        
+            expect(classToCheck).toEqual(passwordStrengthsArray[i]);
+
+            await signUpPage.clearInputField(signUpPage.selectors.passwordInputField);
+        };
+    });
+
+    test('Should fail to Sign up and display error, when passwords do not match', async () => {
+        await signUpPage.setPassword('testtest1!');
+        await signUpPage.repeatPassword('testtest');
+        await signUpPage.clickCreateAccountButton();
+
+        await signUpPage.assertErrorMessage(
+            signUpPage.selectors.confirmPasswordError,
+            signUpPage.errorMessages.passwordsDoNotMatchErrorMessage
+        );
+    });
+
+    // TODO: Proper test which hijacks the request and verifies the results
 })
