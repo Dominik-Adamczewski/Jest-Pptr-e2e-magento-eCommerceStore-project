@@ -38,4 +38,14 @@ export default class BasePage {
         await input.click({ clickCount: 3 });
         await page.keyboard.press('Backspace');
     };
+
+    async getElementClass(selector) {
+        await page.waitForSelector(selector);
+
+        const element = await page.$(selector);
+
+        const className = await (await element.getProperty('className')).jsonValue();
+
+        return className;
+    }
 }
