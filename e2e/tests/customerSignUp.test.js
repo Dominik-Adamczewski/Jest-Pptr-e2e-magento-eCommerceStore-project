@@ -1,16 +1,20 @@
 import { E2E_BASE_URL } from "../globals";
+import { getRandomNumber } from "../helpers/helpers";
 import SignUpPage from "../../pom/SignUpPage";
+import MyAccountPage from "../../pom/MyAccountPage";
 
 
-jest.setTimeout(15000);
+jest.setTimeout(30000);
 
 const path = 'customer/account/create/';
 
 describe('Sign up test suite', () => {
     let signUpPage;
+    let myAccountPage;
 
     beforeEach(async () => {
         signUpPage = new SignUpPage(page);
+        myAccountPage = new MyAccountPage(page);
 
         await page.goto(`${E2E_BASE_URL}${path}`);
         await signUpPage.waitForSignUpPageToRender();
@@ -84,5 +88,28 @@ describe('Sign up test suite', () => {
         );
     });
 
-    // TODO: Proper test which hijacks the request and verifies the results
+    test('Should succesfully Sign up new user', async () => {
+
+        const randomNumberForFirstName = getRandomNumber(10);
+        const randomNumberForEmail = getRandomNumber(10000);
+
+        const firstName = `Dominik${randomNumberForFirstName}`;
+        const lastName = 'Testerowy';
+        const emailAddress = `dominikonx+${randomNumberForEmail}@wp.pl`;
+        const password = 'Testertest1!';
+
+        await signUpPage.setFirstName(firstName);
+        await signUpPage.setLastName(lastName);
+        await signUpPage.setEmailAddress(emailAddress);
+        await signUpPage.setPassword(password);
+        await signUpPage.repeatPassword(password);
+        await signUpPage.clickCreateAccountButton();
+
+        await myAccountPage.waitForMyAccountPageToLoad();
+        await myAccountPage.assertSignUpSuccessMessage();
+
+        await myAccountPage.assertRegisteredFirstName(firstName);
+        await myAccountPage.assertRegisteredLastName(lastName);
+        await myAccountPage.assertRegisteredEmail(emailAddress);
+    });
 })

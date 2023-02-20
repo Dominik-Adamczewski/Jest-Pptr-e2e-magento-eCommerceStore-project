@@ -47,5 +47,5 @@ export default class BasePage {
         const className = await (await element.getProperty('className')).jsonValue();
 
         return className;
-    }
+    };
 }
