@@ -10,20 +10,16 @@ export default class SignUpPage extends BasePage {
         passwordInputField: '#password',
         passwordConfirmationField: '[name="password_confirmation"]',
         createAccountButton: '[title="Create an Account"]',
+        passwordStrengthMeter: '#password-strength-meter-container',
+
+    };
+
+    errorMessagesSelectors = {
         emailError: '#email_address-error',
         passwordError: '#password-error',
         confirmPasswordError: '#password-confirmation-error',
         firstNameError: '#firstname-error',
         lastNameError: '#lastname-error',
-        allInputErrors: [
-            this.firstNameError,
-            this.lastNameError,
-            this.emailError,
-            this.passwordError,
-            this.confirmPasswordError
-        ],
-        passwordStrengthMeter: '#password-strength-meter-container',
-
     };
 
     errorMessages = {
@@ -43,24 +39,26 @@ export default class SignUpPage extends BasePage {
     ];
 
     async waitForSignUpPageToRender() {
-        await this.page.waitForSelector(this.selectors.signUpForm);
+        await page.waitForSelector(this.selectors.signUpForm);
     };
 
     async clickCreateAccountButton() {
-        await this.page.waitForSelector(this.selectors.createAccountButton);
-        await this.page.click(this.selectors.createAccountButton);
+        await page.waitForSelector(this.selectors.createAccountButton);
+        await page.click(this.selectors.createAccountButton);
     };
 
     async assertEmptyInputsErrorMessages() {
-        for(let error of this.selectors.allInputErrors) {
-            const expectedErrorMessage = await this.getText(error);
+
+        for(const errorSelector in this.errorMessagesSelectors) {
+            await page.waitForSelector(this.errorMessagesSelectors[errorSelector]);
+            const expectedErrorMessage = await this.getText(this.errorMessagesSelectors[errorSelector]);
 
             expect(expectedErrorMessage).toEqual(this.errorMessages.emptyFieldErrorMessage);
         };
     };
 
     async assertErrorMessage(selector, errorMessage) {
-        await this.page.waitForSelector(selector);
+        await page.waitForSelector(selector);
         
         const displayedErrorMsg = await this.getText(selector);
 
@@ -68,32 +66,32 @@ export default class SignUpPage extends BasePage {
     };
 
     async setFirstName(text) {
-        await this.page.waitForSelector(this.selectors.firstNameInputField);
-        await this.page.type(this.selectors.firstNameInputField, text);
+        await page.waitForSelector(this.selectors.firstNameInputField);
+        await page.type(this.selectors.firstNameInputField, text);
     };
 
     async setLastName(text) {
-        await this.page.waitForSelector(this.selectors.lastNameInputField);
-        await this.page.type(this.selectors.lastNameInputField, text);
+        await page.waitForSelector(this.selectors.lastNameInputField);
+        await page.type(this.selectors.lastNameInputField, text);
     };
 
     async checkNewsletterCheckbox() {
-        await this.page.waithForSelector(this.selectors.newsletterCheckbox);
+        await page.waithForSelector(this.selectors.newsletterCheckbox);
         await this.page.click(this.selectors.newsletterCheckbox);
     };
 
     async setEmailAddress(text) {
-        await this.page.waitForSelector(this.selectors.emailInputField);
+        await page.waitForSelector(this.selectors.emailInputField);
         await this.page.type(this.selectors.emailInputField, text);
     };
 
     async setPassword(text) {
-        await this.page.waitForSelector(this.selectors.passwordInputField);
+        await page.waitForSelector(this.selectors.passwordInputField);
         await this.page.type(this.selectors.passwordInputField, text);
     };
 
     async repeatPassword(text) {
-        await this.page.waitForSelector(this.selectors.passwordConfirmationField);
+        await page.waitForSelector(this.selectors.passwordConfirmationField);
         await this.page.type(this.selectors.passwordConfirmationField, text);
     };
 };

@@ -2,11 +2,23 @@ import { E2E_BASE_URL } from "../globals";
 import { getRandomNumber } from "../helpers/helpers";
 import SignUpPage from "../../pom/SignUpPage";
 import MyAccountPage from "../../pom/MyAccountPage";
+import { emulateMobileDevice, emulateTabletDevice } from "../helpers/emulators";
 
 
 jest.setTimeout(30000);
 
 const path = 'customer/account/create/';
+
+const randomNumberForFirstName = getRandomNumber(10);
+const randomNumberForEmail = getRandomNumber(10000);
+
+
+const signUpDetails = {
+    firstName: `Dominik${randomNumberForFirstName}`,
+    lastName: 'Testing',
+    emailAddress: `Testing+${randomNumberForEmail}@wp.pl`,
+    password: 'Testertest1!'
+};
 
 describe('Sign up test suite', () => {
     let signUpPage;
@@ -31,7 +43,7 @@ describe('Sign up test suite', () => {
         await signUpPage.clickCreateAccountButton();
 
         await signUpPage.assertErrorMessage(
-            signUpPage.selectors.emailError,
+            signUpPage.errorMessagesSelectors.emailError,
             signUpPage.errorMessages.emailAddresInvalidErrorMessage
         );
     });
@@ -41,7 +53,7 @@ describe('Sign up test suite', () => {
         await signUpPage.clickCreateAccountButton();
 
         await signUpPage.assertErrorMessage(
-            signUpPage.selectors.passwordError,
+            signUpPage.errorMessagesSelectors.passwordError,
             signUpPage.errorMessages.tooShortPasswordErrorMessage
         );
 
@@ -52,7 +64,7 @@ describe('Sign up test suite', () => {
         await signUpPage.clickCreateAccountButton();
 
         await signUpPage.assertErrorMessage(
-            signUpPage.selectors.passwordError,
+            signUpPage.errorMessagesSelectors.passwordError,
             signUpPage.errorMessages.notEnoughCharactersClassesErrorMessage
         );
     });
@@ -83,33 +95,61 @@ describe('Sign up test suite', () => {
         await signUpPage.clickCreateAccountButton();
 
         await signUpPage.assertErrorMessage(
-            signUpPage.selectors.confirmPasswordError,
+            signUpPage.errorMessagesSelectors.confirmPasswordError,
             signUpPage.errorMessages.passwordsDoNotMatchErrorMessage
         );
     });
 
-    test('Should succesfully Sign up new user', async () => {
+    test('DESKTOP: Should succesfully Sign up new user', async () => {
 
-        const randomNumberForFirstName = getRandomNumber(10);
-        const randomNumberForEmail = getRandomNumber(10000);
-
-        const firstName = `Dominik${randomNumberForFirstName}`;
-        const lastName = 'Testerowy';
-        const emailAddress = `dominikonx+${randomNumberForEmail}@wp.pl`;
-        const password = 'Testertest1!';
-
-        await signUpPage.setFirstName(firstName);
-        await signUpPage.setLastName(lastName);
-        await signUpPage.setEmailAddress(emailAddress);
-        await signUpPage.setPassword(password);
-        await signUpPage.repeatPassword(password);
+        await signUpPage.setFirstName(signUpDetails.firstName);
+        await signUpPage.setLastName(signUpDetails.lastName);
+        await signUpPage.setEmailAddress(signUpDetails.emailAddress);
+        await signUpPage.setPassword(signUpDetails.password);
+        await signUpPage.repeatPassword(signUpDetails.password);
         await signUpPage.clickCreateAccountButton();
 
         await myAccountPage.waitForMyAccountPageToLoad();
         await myAccountPage.assertSignUpSuccessMessage();
 
-        await myAccountPage.assertRegisteredFirstName(firstName);
-        await myAccountPage.assertRegisteredLastName(lastName);
-        await myAccountPage.assertRegisteredEmail(emailAddress);
+        await myAccountPage.assertRegisteredFirstName(signUpDetails.firstName);
+        await myAccountPage.assertRegisteredLastName(signUpDetails.lastName);
+        await myAccountPage.assertRegisteredEmail(signUpDetails.emailAddress);
+    });
+
+    test('MOBILE: Should successfully Sign up new user', async () => {
+        await emulateMobileDevice();
+        
+        await signUpPage.setFirstName(signUpDetails.firstName);
+        await signUpPage.setLastName(signUpDetails.lastName);
+        await signUpPage.setEmailAddress(signUpDetails.emailAddress);
+        await signUpPage.setPassword(signUpDetails.password);
+        await signUpPage.repeatPassword(signUpDetails.password);
+        await signUpPage.clickCreateAccountButton();
+
+        await myAccountPage.waitForMyAccountPageToLoad();
+        await myAccountPage.assertSignUpSuccessMessage();
+
+        await myAccountPage.assertRegisteredFirstName(signUpDetails.firstName);
+        await myAccountPage.assertRegisteredLastName(signUpDetails.lastName);
+        await myAccountPage.assertRegisteredEmail(signUpDetails.emailAddress);
+    });
+
+    test('TABLET: Should successfully Sign up new user', async () => {
+        await emulateTabletDevice();
+        
+        await signUpPage.setFirstName(signUpDetails.firstName);
+        await signUpPage.setLastName(signUpDetails.lastName);
+        await signUpPage.setEmailAddress(signUpDetails.emailAddress);
+        await signUpPage.setPassword(signUpDetails.password);
+        await signUpPage.repeatPassword(signUpDetails.password);
+        await signUpPage.clickCreateAccountButton();
+
+        await myAccountPage.waitForMyAccountPageToLoad();
+        await myAccountPage.assertSignUpSuccessMessage();
+
+        await myAccountPage.assertRegisteredFirstName(signUpDetails.firstName);
+        await myAccountPage.assertRegisteredLastName(signUpDetails.lastName);
+        await myAccountPage.assertRegisteredEmail(signUpDetails.emailAddress);
     });
 })
