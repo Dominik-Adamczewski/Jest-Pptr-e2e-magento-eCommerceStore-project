@@ -4,7 +4,18 @@ import { credentials } from "../e2e/credentials";
 export default class HomePage extends BasePage {
     selectors = {
         header: '.page-header',
-        loggedInUserMenu: '[class="page-header"] > div.panel > div.panel > ul.header > li.greet > span.logged-in'
+        loggedInUserMenu: '[class="page-header"] > div.panel > div.panel > ul.header > li.greet > span.logged-in',
+        navigationMenu: '.navigation',
+        navigationListItems: '#ui-id-2 > li',
+    };
+
+    urlEndpoints = {
+        whatsNewPage: 'what-is-new.html',
+        womenPage: 'women.html',
+        menPage: 'men.html',
+        gearPage: 'gear.html',
+        trainingPage: 'training.html',
+        salePage: 'sale.html'
     };
 
     textContents = {
