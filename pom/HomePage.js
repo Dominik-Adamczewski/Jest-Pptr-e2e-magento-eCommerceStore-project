@@ -6,17 +6,17 @@ export default class HomePage extends BasePage {
         header: '.page-header',
         loggedInUserMenu: '[class="page-header"] > div.panel > div.panel > ul.header > li.greet > span.logged-in',
         navigationMenu: '.navigation',
-        navigationListItems: '#ui-id-2 > li',
+        navigationListItems: 'li.level0',
     };
 
-    urlEndpoints = {
-        whatsNewPage: 'what-is-new.html',
-        womenPage: 'women.html',
-        menPage: 'men.html',
-        gearPage: 'gear.html',
-        trainingPage: 'training.html',
-        salePage: 'sale.html'
-    };
+    urlEndpoints = [
+        'what-is-new.html',
+        'women.html',
+        'men.html',
+        'gear.html',
+        'training.html',
+        'sale.html'
+    ];
 
     textContents = {
         loggedInUserMessage: `Welcome, ${credentials.userName}!`,
@@ -32,5 +32,10 @@ export default class HomePage extends BasePage {
         const text = await this.getText(this.selectors.loggedInUserMenu);
 
         expect(text).toEqual(this.textContents.loggedInUserMessage);
+    };
+
+    async clickShopSection(selector) {
+        await page.waitForSelector(selector);
+        await page.click(selector);
     };
 };
