@@ -18,29 +18,23 @@ describe('Smoke tests for main sale categories', () => {
 
     test('Navigating to the section should use GET method and return 200 response code', async () => {
         
-        let categories = await page.$$(homePage.selectors.navigationListItems);
+        const categoryPagesLinks = await homePage.getArrayOfLinks(homePage.selectors.categories);
 
-        for(let i = 0; i < categories.length; i++) {
+        for(let i = 0; i < categoryPagesLinks.length; i++) {
             
             page.on('request', (request) => {
-                if(request.url() === `${E2E_BASE_URL}${homePage.urlEndpoints[i]}`) {
+                if(request.url() === `${E2E_BASE_URL}${homePage.categoriesEndpoints[i]}`) {
                     expect(request.method()).toEqual('GET');
                 };
             });
 
             page.on('response', (response) => {
-                if(response.url() === `${E2E_BASE_URL}${homePage.urlEndpoints[i]}`) {
+                if(response.url() === `${E2E_BASE_URL}${homePage.categoriesEndpoints[i]}`) {
                     expect(response.status()).toEqual(200);
                 };
             })
 
-            await categories[i].click();
-            await categoryPage.waitForCategoryPageToRender();
-
-            await page.goBack();
-
-            // Refresh the category context, to not loose it because of the navigation, and prevent test from crashing
-            categories = await page.$$(homePage.selectors.navigationListItems);
+            await page.goto(categoryPagesLinks[i]);
         }
         
     });
