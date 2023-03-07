@@ -48,4 +48,8 @@ export default class BasePage {
 
         return className;
     };
+
+    async getArrayOfLinks(selector) {
+        return await page.$$eval(selector, anchors => [].map.call(anchors, a => a.href));
+    };
 }

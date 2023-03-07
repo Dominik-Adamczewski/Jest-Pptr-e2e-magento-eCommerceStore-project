@@ -6,10 +6,10 @@ export default class HomePage extends BasePage {
         header: '.page-header',
         loggedInUserMenu: '[class="page-header"] > div.panel > div.panel > ul.header > li.greet > span.logged-in',
         navigationMenu: '.navigation',
-        navigationListItems: 'li.level0',
+        categories: 'nav.navigation > ul#ui-id-2 > li > a'
     };
 
-    urlEndpoints = [
+    categoriesEndpoints = [
         'what-is-new.html',
         'women.html',
         'men.html',
