@@ -23,6 +23,10 @@ export default class BasePage {
         return text;
     };
 
+    async convertTextToLowerCase(text) {
+        return text.toLowerCase();
+    };
+
     async assertText(selector, expectedText) {
         await page.waitForSelector(selector);
 
@@ -39,12 +43,12 @@ export default class BasePage {
         await page.keyboard.press('Backspace');
     };
 
-    async getElementClass(selector) {
+    async getElementsHTMLAttribute(selector, attribute) {
         await page.waitForSelector(selector);
 
         const element = await page.$(selector);
 
-        const className = await (await element.getProperty('className')).jsonValue();
+        const className = await (await element.getProperty(attribute)).jsonValue();
 
         return className;
     };

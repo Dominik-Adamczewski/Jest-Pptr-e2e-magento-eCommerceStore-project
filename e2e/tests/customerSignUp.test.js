@@ -81,7 +81,7 @@ describe('Sign up test suite', () => {
         for(let i = 0; i < passwordStrengthsArray.length; i++) {
             await signUpPage.setPassword(arrayOfPasswords[i]);
 
-            const classToCheck = await signUpPage.getElementClass(signUpPage.selectors.passwordStrengthMeter);
+            const classToCheck = await signUpPage.getElementsHTMLAttribute(signUpPage.selectors.passwordStrengthMeter, 'className');
                         
             expect(classToCheck).toEqual(passwordStrengthsArray[i]);
 
