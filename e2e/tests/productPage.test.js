@@ -12,11 +12,13 @@ describe('CURRENT', () => {
     beforeEach(async () => {
         productPage = new ProductPage(page);
         basePage = new BasePage(page);
+
+        await productPage.openProductPage(productPage.productUrls.multipleSizesAndColorsProduct);
     })
 
 
     test('Verify whether change of color applies to the photo of the product', async () => {
-        await productPage.openProductPage(productPage.productUrls.multipleSizesAndColorsProduct);
+        await productPage.waitForColorPickerToRender();
 
         const colors = await page.$$(productPage.selectors.avalableColors);
 
@@ -33,7 +35,6 @@ describe('CURRENT', () => {
     });
 
     test('Verify whether change of size, is properly applied to the product', async () => {
-        await productPage.openProductPage(productPage.productUrls.multipleSizesAndColorsProduct);
         await productPage.waitForSizesListToRender();
 
         const sizes = await page.$$(productPage.selectors.availableSizes);
@@ -48,4 +49,23 @@ describe('CURRENT', () => {
             expect(clickedSize).toEqual(chosenSize);
         }
     });
+
+    test('Verify whether product review request is properly handled and if payload matches data, typed by the user', async () => {
+        const payload = '&ratings%5B4%5D=20&validate_rating=&nickname=Dominik+testowy&title=The+best+jacket+ever%21&detail=Looks+nice+and+wears+nice.';
+        
+        await productPage.openReviewForm();
+        await productPage.waitForReviewFormToRender();
+
+        page.on('request', (request) => {
+            if(request.resourceType() === 'document' && request.method() === 'POST') {
+                expect(request.postData()).toContain(payload);
+            }
+        });
+
+        await productPage.chooseFiveStarRating();
+        await productPage.setNickname('Dominik testowy');
+        await productPage.setSummary('The best jacket ever!');
+        await productPage.setReviewText('Looks nice and wears nice.');
+        await productPage.submitTheReview();
+    }); // Add a for loop which would be iterating over the form and changing the value of the start for each iteration
 })
