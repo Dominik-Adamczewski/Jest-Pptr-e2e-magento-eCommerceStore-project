@@ -20,8 +20,8 @@ describe('CURRENT', () => {
 
         const colors = await page.$$(productPage.selectors.avalableColors);
 
-        for(let i = 0; i < colors.length; i++) {
-            await colors[i].click();
+        for(let color of colors) {
+            await color.click();
             await productPage.waitForFirstPictureToRender();
 
             const chosenColor = await basePage.getText(productPage.selectors.chosenColor);
@@ -29,6 +29,23 @@ describe('CURRENT', () => {
             const imageWithCHangedColorUrl = await basePage.getElementsHTMLAttribute(productPage.selectors.firstImage, 'src');
 
             expect(imageWithCHangedColorUrl).toContain(colorInLowerCase);
+        }
+    });
+
+    test('Verify whether change of size, is properly applied to the product', async () => {
+        await productPage.openProductPage(productPage.productUrls.multipleSizesAndColorsProduct);
+        await productPage.waitForSizesListToRender();
+
+        const sizes = await page.$$(productPage.selectors.availableSizes);
+
+        for(let size of sizes) {
+            await size.click();
+
+            let attribute = 'option-label';
+            const chosenSize = await basePage.getText(productPage.selectors.chosenSize);
+            const clickedSize = await basePage.getTextOfAnIterable(size);
+
+            expect(clickedSize).toEqual(chosenSize);
         }
     });
 })

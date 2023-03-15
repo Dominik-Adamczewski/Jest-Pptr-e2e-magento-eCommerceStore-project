@@ -9,8 +9,11 @@ export default class ProductPage extends BasePage {
     selectors = {
         productHeading: '.page-title',
         colorsList: '[aria-labelledby="option-label-color-93"]',
+        sizesList: '[class="swatch-attribute size"]',
         chosenColor: '#option-label-color-93 + span.swatch-attribute-selected-option',
+        chosenSize: '[class="swatch-attribute size"] > .swatch-attribute-selected-option',
         avalableColors: '[aria-labelledby="option-label-color-93"] > div.swatch-option',
+        availableSizes: '[class="swatch-attribute size"] > div.swatch-attribute-options > div',
         firstImage: '.fotorama__stage > div:nth-of-type(3) > div:nth-of-type(1) > img.fotorama__img',
     };
 
@@ -23,7 +26,7 @@ export default class ProductPage extends BasePage {
         await page.waitForSelector(this.selectors.firstImage);
     };
 
-    async waitForColorPickerToRender() {
-        await page.waitForSelector(this.selectors.test);
+    async waitForSizesListToRender() {
+        await page.waitForSelector(this.selectors.sizesList);
     }
 }
