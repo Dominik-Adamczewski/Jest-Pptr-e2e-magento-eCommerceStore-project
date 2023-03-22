@@ -6,7 +6,8 @@ export default class HomePage extends BasePage {
         header: '.page-header',
         loggedInUserMenu: '[class="page-header"] > div.panel > div.panel > ul.header > li.greet > span.logged-in',
         navigationMenu: '.navigation',
-        categories: 'nav.navigation > ul#ui-id-2 > li > a'
+        categories: 'nav.navigation > ul#ui-id-2 > li > a',
+        listOfHotSellersProducts: 'ol.product-items > li',
     };
 
     categoriesEndpoints = [

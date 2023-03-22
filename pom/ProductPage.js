@@ -22,6 +22,7 @@ export default class ProductPage extends BasePage {
         reviewInputField: '#review_field',
         submitReviewButton: '.actions-primary > button',
         reviewFormContainer: '.review-add',
+        addToWishlistButton: '.towishlist',
     };
 
     async openProductPage(url) {
@@ -44,6 +45,10 @@ export default class ProductPage extends BasePage {
     async waitForReviewFormToRender() {
         await page.waitForSelector(this.selectors.reviewFormContainer);
     };
+
+    async waitForProductPageToRender() {
+        await page.waitForSelector(this.selectors.productHeading);
+    }
 
     async chooseFiveStarRating() {
         const element = await page.$(this.selectors.fiveStarsRating);
@@ -69,5 +74,9 @@ export default class ProductPage extends BasePage {
 
     async openReviewForm() {
         await page.click(this.selectors.reviewsSection);
+    };
+
+    async addProductToWishList() {
+        await page.click(this.selectors.addToWishlistButton);
     }
 }

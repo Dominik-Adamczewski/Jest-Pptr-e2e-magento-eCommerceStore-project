@@ -23,12 +23,20 @@ export default class BasePage {
         return text;
     };
 
+    async getOuterText(selector) {
+        await page.waitForSelector(selector);
+
+        const text = await page.$eval(selector, element => element.outerText);
+
+        return text;
+    };
+
     async getTextOfAnIterable(iterable) {
         
         const text = await page.evaluate(element => element.innerHTML, iterable);
 
         return text;
-    }
+    };
 
     async convertTextToLowerCase(text) {
         return text.toLowerCase();

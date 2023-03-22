@@ -1,4 +1,5 @@
 import BasePage from "./BasePage";
+import { credentials } from "../e2e/credentials";
 
 export default class LoginPage extends BasePage {
 
@@ -41,4 +42,10 @@ export default class LoginPage extends BasePage {
 
         expect(errorMessageText).toEqual(errorMsgContent);
     };
+
+    async loginAsUser() {
+        await this.setEmail(credentials.login);
+        await this.setPassword(credentials.password);
+        await this.submitLogInForm();
+    }
 };

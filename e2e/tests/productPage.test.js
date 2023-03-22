@@ -1,11 +1,10 @@
-import { E2E_BASE_URL } from "../globals";
 import ProductPage from "../../pom/ProductPage";
 import BasePage from "../../pom/BasePage";
 
 
 jest.setTimeout(30000);
 
-describe('CURRENT', () => {
+describe('Test suite for product page', () => {
     let productPage;
     let basePage;
     
@@ -42,7 +41,6 @@ describe('CURRENT', () => {
         for(let size of sizes) {
             await size.click();
 
-            let attribute = 'option-label';
             const chosenSize = await basePage.getText(productPage.selectors.chosenSize);
             const clickedSize = await basePage.getTextOfAnIterable(size);
 
@@ -67,5 +65,5 @@ describe('CURRENT', () => {
         await productPage.setSummary('The best jacket ever!');
         await productPage.setReviewText('Looks nice and wears nice.');
         await productPage.submitTheReview();
-    }); // Add a for loop which would be iterating over the form and changing the value of the start for each iteration
+    });
 })
