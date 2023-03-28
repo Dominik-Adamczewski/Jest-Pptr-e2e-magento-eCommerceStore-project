@@ -10,7 +10,7 @@ jest.setTimeout(90000);
 
 const path = 'customer/account/login/referer/aHR0cHM6Ly9tYWdlbnRvLnNvZnR3YXJldGVzdGluZ2JvYXJkLmNvbS8%2C/';
 
-describe('CURRENT', () => {
+describe('Test suite for a wishlist', () => {
     let productPage;
     let homePage;
     let loginPage;
