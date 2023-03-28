@@ -5,7 +5,10 @@ export default class HomePage extends BasePage {
     selectors = {
         header: '.page-header',
         loggedInUserMenu: '[class="page-header"] > div.panel > div.panel > ul.header > li.greet > span.logged-in',
+        loggedInUserMenuActionArrow: '[class="action switch"]:nth-of-type(1)',
+        loggedInUserMenuOptions: '.header > ul.header',
         navigationMenu: '.navigation',
+        wishListButton: '.header > ul.header > li.customer-welcome > div.customer-menu > ul > li.wishlist',
         categories: 'nav.navigation > ul#ui-id-2 > li > a',
         listOfHotSellersProducts: 'ol.product-items > li',
     };
@@ -38,5 +41,11 @@ export default class HomePage extends BasePage {
     async clickShopSection(selector) {
         await page.waitForSelector(selector);
         await page.click(selector);
+    };
+
+    async openWishListPage() {
+        await page.click(this.selectors.loggedInUserMenuActionArrow);
+        await page.waitForSelector(this.selectors.loggedInUserMenuOptions);
+        await page.click(this.selectors.wishListButton);
     };
 };

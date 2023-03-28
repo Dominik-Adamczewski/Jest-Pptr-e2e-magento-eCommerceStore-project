@@ -6,7 +6,9 @@ export default class WishListPage extends BasePage {
         itemAddedToWishListAlert: '[role="alert"]',
         wishListItems: '.products-grid > ol > li.product-item',
         wishListItemTitle: '.products-grid > ol > li.product-item > div > a:last-of-type',
+        removeItemButton: '[data-role="remove"]',
         mainLogo: '.logo',
+        emptyWishListMessage: '[class="message info empty"]'
     };
 
     async waitForWishListToRender() {
@@ -19,5 +21,10 @@ export default class WishListPage extends BasePage {
 
     async navigateToHomePage() {
         await page.click(this.selectors.mainLogo);
+    };
+
+    async removeItemFromWishlist() {
+        await page.waitForSelector(this.selectors.removeItemButton);
+        await page.click(this.selectors.removeItemButton);
     };
 }

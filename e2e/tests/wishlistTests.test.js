@@ -4,8 +4,9 @@ import LoginPage from "../../pom/LoginPage";
 import ProductPage from "../../pom/ProductPage";
 import WishListPage from "../../pom/WishListPage";
 import { E2E_BASE_URL } from "../globals";
+import { isElementVisible } from "../helpers/helpers";
 
-jest.setTimeout(75000);
+jest.setTimeout(90000);
 
 const path = 'customer/account/login/referer/aHR0cHM6Ly9tYWdlbnRvLnNvZnR3YXJldGVzdGluZ2JvYXJkLmNvbS8%2C/';
 
@@ -16,7 +17,7 @@ describe('CURRENT', () => {
     let basePage;
     let wishListPage;
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         productPage = new ProductPage(page);
         basePage = new BasePage(page);
         loginPage = new LoginPage(page);
@@ -53,5 +54,24 @@ describe('CURRENT', () => {
         const itemsAddedToWishList = await page.$$(wishListPage.selectors.wishListItems);
 
         expect(itemsAddedToWishList.length).toEqual(hotSellers.length);
+    });
+
+    test('Should remove all the items from the wishlist', async () => {
+        await homePage.openWishListPage();
+        await wishListPage.waitForWishListToRender();
+
+        let wishListItems = await page.$$(wishListPage.selectors.wishListItems);
+
+        while(wishListItems.length > 0) {
+            await wishListItems[0].hover();
+            await page.click(wishListPage.selectors.removeItemButton);
+        
+            await wishListPage.waitForSuccessAlertMessageToRender();
+        
+            wishListItems = await page.$$(wishListPage.selectors.wishListItems);
+        };
+
+        // assert if the empty wish list message is visible
+        await page.waitForSelector(wishListPage.selectors.emptyWishListMessage, { visible: true, timeout: 2000 });
     });
 })

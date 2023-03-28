@@ -48,7 +48,7 @@ export default class ProductPage extends BasePage {
 
     async waitForProductPageToRender() {
         await page.waitForSelector(this.selectors.productHeading);
-    }
+    };
 
     async chooseFiveStarRating() {
         const element = await page.$(this.selectors.fiveStarsRating);
