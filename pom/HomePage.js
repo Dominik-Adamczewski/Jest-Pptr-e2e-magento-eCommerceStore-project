@@ -11,6 +11,9 @@ export default class HomePage extends BasePage {
         wishListButton: '.header > ul.header > li.customer-welcome > div.customer-menu > ul > li.wishlist',
         categories: 'nav.navigation > ul#ui-id-2 > li > a',
         listOfHotSellersProducts: 'ol.product-items > li',
+        navbarMenSectionDropdown: '.nav-3',
+        navbarMenSubsectionTops: '.nav-3-1',
+        navbarMenSubsectionTopsJackets: '.nav-3-1-1'
     };
 
     categoriesEndpoints = [
@@ -48,4 +51,10 @@ export default class HomePage extends BasePage {
         await page.waitForSelector(this.selectors.loggedInUserMenuOptions);
         await page.click(this.selectors.wishListButton);
     };
+
+    async openproductsListWithMensJackets() {
+        await page.hover(this.selectors.navbarMenSectionDropdown);
+        await page.hover(this.selectors.navbarMenSubsectionTops);
+        await page.click(this.selectors.navbarMenSubsectionTopsJackets);
+    }
 };

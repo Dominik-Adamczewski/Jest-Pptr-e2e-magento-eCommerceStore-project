@@ -13,7 +13,9 @@ export default class ProductPage extends BasePage {
         chosenColor: '#option-label-color-93 + span.swatch-attribute-selected-option',
         chosenSize: '[class="swatch-attribute size"] > .swatch-attribute-selected-option',
         avalableColors: '[aria-labelledby="option-label-color-93"] > div.swatch-option',
+        firstAvailableColor: '[attribute-code="color"] > div > div.swatch-option:nth-of-type(1)',
         availableSizes: '[class="swatch-attribute size"] > div.swatch-attribute-options > div',
+        firstAvailableSize: '[attribute-code="size"] > div > div.swatch-option:nth-of-type(1)',
         firstImage: '.fotorama__stage > div:nth-of-type(3) > div:nth-of-type(1) > img.fotorama__img',
         reviewsSection: '#tab-label-reviews',
         fiveStarsRating: '#Rating_5_label',
@@ -23,6 +25,13 @@ export default class ProductPage extends BasePage {
         submitReviewButton: '.actions-primary > button',
         reviewFormContainer: '.review-add',
         addToWishlistButton: '.towishlist',
+        addToCartButton: '[title="Add to Cart"]',
+        missingSizeError: '[attribute-code="size"] > div.mage-error',
+        missingColorError: '[attribute-code="color"] > div.mage-error'
+    };
+
+    errorMessages = {
+        missingSizeOrColorErrorMessage: 'This is a required field.'
     };
 
     async openProductPage(url) {
@@ -78,5 +87,30 @@ export default class ProductPage extends BasePage {
 
     async addProductToWishList() {
         await page.click(this.selectors.addToWishlistButton);
-    }
+    };
+
+    async addProductToCart() {
+        await page.waitForSelector(this.selectors.addToCartButton);
+        await page.click(this.selectors.addToCartButton);
+    };
+
+    async assertColorErrorMessage() {
+        const text = await this.getText(this.selectors.missingColorError);
+
+        expect(text).toEqual(this.errorMessages.missingSizeOrColorErrorMessage);
+    };
+
+    async assertSizeErrorMessage() {
+        const text = await this.getText(this.selectors.missingSizeError);
+
+        expect(text).toEqual(this.errorMessages.missingSizeOrColorErrorMessage);
+    };
+
+    async pickFirstAvailableColor() {
+        await page.click(this.selectors.firstAvailableColor);
+    };
+
+    async pickFirstAvailableSize() {
+        await page.click(this.selectors.firstAvailableSize);
+    };
 }
