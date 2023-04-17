@@ -71,4 +71,20 @@ export default class BasePage {
     async getArrayOfLinks(selector) {
         return await page.$$eval(selector, anchors => [].map.call(anchors, a => a.href));
     };
+
+    async isElementVisible(selector) {
+        const isVisible = await page.evaluate((selector) => {
+            const element = document.querySelector(selector);
+
+            if(element && element.offsetWidth && element.offsetHeigth) {
+                // Element is visible
+                return true;
+            } else {
+                // element is not visible
+                return false;
+            }
+        }, selector);
+
+        return isVisible;
+    };
 }

@@ -27,7 +27,8 @@ export default class ProductPage extends BasePage {
         addToWishlistButton: '.towishlist',
         addToCartButton: '[title="Add to Cart"]',
         missingSizeError: '[attribute-code="size"] > div.mage-error',
-        missingColorError: '[attribute-code="color"] > div.mage-error'
+        missingColorError: '[attribute-code="color"] > div.mage-error',
+        addingToCartSuccessMessage: '[role="alert"]',
     };
 
     errorMessages = {
@@ -59,6 +60,10 @@ export default class ProductPage extends BasePage {
         await page.waitForSelector(this.selectors.productHeading);
     };
 
+    async waitForAddToCartSuccessMessage() {
+        await page.waitForSelector(this.selectors.addingToCartSuccessMessage);
+    };
+
     async chooseFiveStarRating() {
         const element = await page.$(this.selectors.fiveStarsRating);
 
@@ -83,6 +88,14 @@ export default class ProductPage extends BasePage {
 
     async openReviewForm() {
         await page.click(this.selectors.reviewsSection);
+    };
+
+    async openCart() {
+        await page.waitForSelector(this.selectors.cartIcon);
+        await page.click(this.selectors.cartIcon);
+
+        await page.waitForSelector(this.selectors.viewCartButton);
+        await page.click(this.selectors.viewCartButton);
     };
 
     async addProductToWishList() {

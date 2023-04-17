@@ -4,6 +4,8 @@ import ProductPage from "../../pom/ProductPage";
 import HomePage from "../../pom/HomePage";
 import LoginPage from "../../pom/LoginPage";
 import ProductListPage from "../../pom/ProductsListPage";
+import CartPage from "../../pom/CartPage";
+import BasePage from "../../pom/BasePage";
 
 jest.setTimeout(30000);
 
@@ -15,6 +17,8 @@ describe('CURRENT', () => {
     let homePage;
     let loginPage;
     let productListPage;
+    let cartPage;
+    let basePage;
 
 
     beforeAll(async () => {
@@ -22,9 +26,12 @@ describe('CURRENT', () => {
         homePage = new HomePage(page);
         loginPage = new LoginPage(page);
         productListPage = new ProductListPage(page);
+        cartPage = new CartPage(page);
+        basePage = new BasePage(page);
 
         await page.goto(`${E2E_BASE_URL}${path}`);
         await loginPage.loginAsUser();
+
         await page.goto(E2E_BASE_URL);
         await homePage.waitForHomePageToRender();
     });
@@ -32,7 +39,7 @@ describe('CURRENT', () => {
     beforeEach(async () => {
         await homePage.openproductsListWithMensJackets();
         await productListPage.waitForProductsPageToRender();
-    })
+    });
 
     test('It should not allow to add product to the cart, without picking size and color', async () => {
         await productListPage.pickRandomProductFromTheList(productNumber);
