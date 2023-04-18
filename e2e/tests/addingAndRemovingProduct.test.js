@@ -39,10 +39,10 @@ describe('CURRENT', () => {
     beforeEach(async () => {
         await homePage.openproductsListWithMensJackets();
         await productListPage.waitForProductsPageToRender();
+        await productListPage.pickRandomProductFromTheList(productNumber);
     });
 
     test('It should not allow to add product to the cart, without picking size and color', async () => {
-        await productListPage.pickRandomProductFromTheList(productNumber);
         await productPage.waitForSizesListToRender();
         await productPage.waitForColorPickerToRender();
 
@@ -55,7 +55,6 @@ describe('CURRENT', () => {
     });
 
     test('It should not allow to add product to the cart, without picking size', async () => {
-        await productListPage.pickRandomProductFromTheList(productNumber);
         await productPage.waitForSizesListToRender();
         await productPage.waitForColorPickerToRender();
         await productPage.pickFirstAvailableColor();
@@ -66,7 +65,6 @@ describe('CURRENT', () => {
     });
 
     test('It should not allow to add product to the cart, without picking the color', async () => {
-        await productListPage.pickRandomProductFromTheList(productNumber);
         await productPage.waitForSizesListToRender();
         await productPage.waitForColorPickerToRender();
         await productPage.pickFirstAvailableSize();
@@ -74,6 +72,31 @@ describe('CURRENT', () => {
         await productPage.addProductToCart();
         await page.waitForSelector(productPage.selectors.missingColorError, { visible: true });
         await productPage.assertColorErrorMessage();
+    });
+
+    test('It should properly add a product to the cart', async () => {
+        await productPage.waitForSizesListToRender();
+        await productPage.waitForColorPickerToRender();
+
+        await productPage.pickFirstAvailableColor();
+        await productPage.pickFirstAvailableSize();
+
+        await productPage.addProductToCart();
+        await productPage.waitForAddToCartSuccessMessage();
+
+        await productPage.openCart();
+        await cartPage.waitForCartToRender();
+
+        const cartItems = await page.$$(cartPage.selectors.cartItems);
+
+        expect(cartItems.length).toEqual(1);
+    });
+
+    test('It should properly remove a product from the cart', async () => {
+        await productPage.openCart();
+        await cartPage.removeSingleProductFromCart();
+
+        await cartPage.assertEmptyCart();
     });
 
 })

@@ -29,6 +29,8 @@ export default class ProductPage extends BasePage {
         missingSizeError: '[attribute-code="size"] > div.mage-error',
         missingColorError: '[attribute-code="color"] > div.mage-error',
         addingToCartSuccessMessage: '[role="alert"]',
+        cartIcon: '.minicart-wrapper',
+        viewCartButton: 'a.viewcart',
     };
 
     errorMessages = {

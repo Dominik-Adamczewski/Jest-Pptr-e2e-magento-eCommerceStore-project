@@ -10,6 +10,7 @@ export default class CartPage extends BasePage {
         removeCartItemButton: '.action-delete',
         emptyCartMessage: '.cart-empty',
         tooltipEmptyCartMessage: '[class="subtitle empty"]',
+        removeProductFromCartIcon: '.action-delete',
     };
 
     async waitForCartToRender() {
@@ -38,6 +39,11 @@ export default class CartPage extends BasePage {
     async clickCartIcon() {
         await page.waitForSelector(this.selectors.cartIcon);
         await page.click(this.selectors.cartIcon);
+    };
+
+    async removeSingleProductFromCart() {
+        await page.waitForSelector(this.selectors.removeCartItemButton);
+        await page.click(this.selectors.removeCartItemButton);
     };
 
     async removeProductsFromCart() {
